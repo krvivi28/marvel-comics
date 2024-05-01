@@ -1,9 +1,13 @@
+# Demo
+
+video-link: https://drive.google.com/file/d/1m_8OUrF_p1SM_aucnNfW3qgTzfBCBZ5O/view?usp=sharing
+
 # Installing
 
 1. First, clone the repository:
-   git clone https://github.com/yourusername/your-project-name.git
+   git clone https://github.com/krvivi28/marvel-comics.git
 
-2. cd your-project-name
+2. cd comic-app (project-name)
 
 3. Next, install the dependencies:
    npm install
