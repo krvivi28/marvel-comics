@@ -1,11 +1,15 @@
 import React from "react";
 import { useSearch } from "../../context/SearchContext";
+import { useFilter } from "../../context/FilterContext";
 
 const SeachInput = () => {
   const { setIsSearching, searchInput, setSearchInput } = useSearch();
+  const { setIsFiltering, setSelectedCharcterIds } = useFilter();
 
   const handleOnChange = (e: any) => {
-    console.log(e.target.value);
+    // console.log(e.target.value);
+    setIsFiltering(false);
+    setSelectedCharcterIds([]);
     setTimeout(() => {
       setIsSearching(true);
       setSearchInput(e.target.value);
@@ -13,7 +17,7 @@ const SeachInput = () => {
   };
 
   const resetSearchState = () => {
-    console.log("focus out");
+    // console.log("focus out");
     if (searchInput.trim().length === 0 || searchInput.trim() === "") {
       setTimeout(() => {
         setIsSearching(false);

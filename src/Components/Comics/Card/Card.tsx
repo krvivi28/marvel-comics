@@ -39,7 +39,7 @@ const ComicCard = (props: IPropsCardData) => {
           />
         </div>
       </a>
-      <div className="flex items-center justify-between p-2 text-sm font-semibold">
+      <div className="flex items-center justify-between p-2 text-sm font-semibold w-full">
         <p className="font-normal text-white">{data?.title?.split("#")[0]}</p>
         <span className="text-yellow-500">#{data.issueNumber}</span>
       </div>

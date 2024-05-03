@@ -1,10 +1,10 @@
-import React from "react";
-import ComicCard from "../Card/Card";
+import ComicCard from "./Card/Card";
 import "./comics.css";
 import Pagination from "@mui/material/Pagination";
 import { useSearch } from "../../context/SearchContext";
-import Carousel from "../Characters/CharctersCarousel";
+// import Carousel from "../Characters/CharctersCarousel";
 import { useFilter } from "../../context/FilterContext";
+import spinner from "../../assets/gifs/spinner.gif";
 
 interface IPropsComics {
   data: [];
@@ -14,6 +14,7 @@ interface IPropsComics {
 }
 
 const Comics = (props: IPropsComics) => {
+  console.log("comics called---->>>");
   const { data, setPage, totalComics, charactersData } = props;
   const { searchInput, isSearching } = useSearch();
   const { selectedCharcterIds, setSelectedCharcterIds, setIsFiltering } =
@@ -42,17 +43,19 @@ const Comics = (props: IPropsComics) => {
     <>
       <div
         id="comic"
-        className="bg-[#000000ba] min-h-[77vh] flex flex-col items-center justify-between gap-2 pt-2"
+        className="flex flex-col items-center justify-between gap-2 p-2 min-h-[656px]"
       >
-        <div className="flex items-center justify-start">
-          <p className="text-white text-2xl font-semibold">
-            {isSearching || searchInput ? "Search Results" : ""}
-          </p>
-        </div>
+        {data.length > 0 && (
+          <div className="flex items-center justify-start">
+            <p className="text-white text-2xl font-semibold">
+              {isSearching || searchInput ? "Search Results" : ""}
+            </p>
+          </div>
+        )}
 
-        {selectedCharcterIds.length > 0 && (
+        {selectedCharcterIds.length > 0 && data.length > 0 && (
           <div className="flex items-center justify-between md:w-full md:px-[340px]">
-            <p className="text-white text-xl font-semibold">
+            <p className="text-white text-md font-semibold">
               Explore -{" "}
               {getNamesOfSelectedCharcters().map((name: any, index: any) => {
                 return index === getNamesOfSelectedCharcters().length - 1
@@ -72,13 +75,20 @@ const Comics = (props: IPropsComics) => {
           </div>
         )}
 
-        <div className="grid md:grid-cols-4 md:gap-2 px-5 md:px-[300px] mt-2">
-          {data.map((comicData: any, index) => {
-            return <ComicCard key={index} data={comicData} />;
-          })}
-        </div>
-
-        <div className="flex items-center justify-center p-2 mb-5">
+        {data.length > 0 ? (
+          <div className="grid md:grid-cols-3 lg:grid-cols-4 md:gap-2 px-5 lg:px-[300px] mt-2">
+            {data.map((comicData: any, index) => {
+              return <ComicCard key={index} data={comicData} />;
+            })}
+          </div>
+        ) : (
+          <div className="flex items-center justify-center">
+            <div>
+              <img width={100} src={spinner} alt="" />
+            </div>
+          </div>
+        )}
+        <div className="flex items-center justify-center p-2 mb-10">
           <div className="bg-white p-1 rounded-md">
             <Pagination
               count={Math.floor(totalComics / 8)}
