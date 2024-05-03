@@ -14,7 +14,6 @@ interface IPropsComics {
 }
 
 const Comics = (props: IPropsComics) => {
-  console.log("comics called---->>>");
   const { data, setPage, totalComics, charactersData } = props;
   const { searchInput, isSearching } = useSearch();
   const { selectedCharcterIds, setSelectedCharcterIds, setIsFiltering } =

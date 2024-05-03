@@ -1,17 +1,23 @@
 import DoneIcon from "@mui/icons-material/Done";
-import { useFilter } from "../../../context/FilterContext";
+import { useFilter } from "../../context/FilterContext";
+import { useSearch } from "../../context/SearchContext";
 
 interface IPropsProfile {
   data: any;
+  setPage: any;
 }
 const Character = (props: IPropsProfile) => {
-  const { data } = props;
+  const { data, setPage } = props;
 
   const { selectedCharcterIds, setSelectedCharcterIds, setIsFiltering } =
     useFilter();
 
+  const { setSearchInput, setIsSearching } = useSearch();
+
   const handleCharacterClick = (id: any) => {
-    console.log(id);
+    setPage(1);
+    setSearchInput("");
+    setIsSearching(false);
     if (selectedCharcterIds.includes(id)) {
       const updatedState = selectedCharcterIds.filter((currIndex: any) => {
         return currIndex !== id;

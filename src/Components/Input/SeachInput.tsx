@@ -1,18 +1,19 @@
-import React from "react";
 import { useSearch } from "../../context/SearchContext";
 import { useFilter } from "../../context/FilterContext";
 
-const SeachInput = () => {
+const SeachInput = ({ setPage }: { setPage: any }) => {
   const { setIsSearching, searchInput, setSearchInput } = useSearch();
   const { setIsFiltering, setSelectedCharcterIds } = useFilter();
 
   const handleOnChange = (e: any) => {
     // console.log(e.target.value);
+    setSearchInput(e.target.value);
+    setIsSearching(false);
+    setPage(1);
     setIsFiltering(false);
     setSelectedCharcterIds([]);
     setTimeout(() => {
       setIsSearching(true);
-      setSearchInput(e.target.value);
     }, 1000);
   };
 
@@ -54,6 +55,7 @@ const SeachInput = () => {
           required
           onChange={handleOnChange}
           onBlur={resetSearchState}
+          value={searchInput}
         />
       </div>
     </>
