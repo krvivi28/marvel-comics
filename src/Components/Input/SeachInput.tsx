@@ -6,7 +6,6 @@ const SeachInput = ({ setPage }: { setPage: any }) => {
   const { setIsFiltering, setSelectedCharcterIds } = useFilter();
 
   const handleOnChange = (e: any) => {
-    // console.log(e.target.value);
     setSearchInput(e.target.value);
     setIsSearching(false);
     setPage(1);
@@ -18,7 +17,6 @@ const SeachInput = ({ setPage }: { setPage: any }) => {
   };
 
   const resetSearchState = () => {
-    // console.log("focus out");
     if (searchInput.trim().length === 0 || searchInput.trim() === "") {
       setTimeout(() => {
         setIsSearching(false);

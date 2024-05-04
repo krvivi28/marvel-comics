@@ -1,8 +1,6 @@
 import ComicCard from "./Card/Card";
 import "./comics.css";
-import Pagination from "@mui/material/Pagination";
 import { useSearch } from "../../context/SearchContext";
-// import Carousel from "../Characters/CharctersCarousel";
 import { useFilter } from "../../context/FilterContext";
 import spinner from "../../assets/gifs/spinner.gif";
 
@@ -14,19 +12,12 @@ interface IPropsComics {
 }
 
 const Comics = (props: IPropsComics) => {
-  const { data, setPage, totalComics, charactersData } = props;
+  const { data, charactersData } = props;
   const { searchInput, isSearching } = useSearch();
   const { selectedCharcterIds, setSelectedCharcterIds, setIsFiltering } =
     useFilter();
 
-  const handlePagination = (event: any, page: any) => {
-    setPage(page);
-    console.log("Currently selected page:", page);
-  };
-
   const getNamesOfSelectedCharcters = () => {
-    // console.log("all data for filter", data);
-    // console.log("selected characters selectedCharcterIds", selectedCharcterIds);
     const names: any = [];
     if (charactersData) {
       charactersData.results.map((char: any) => {
@@ -38,11 +29,17 @@ const Comics = (props: IPropsComics) => {
     return names;
   };
 
+  const getMinHeight = () => {
+    return isSearching ? "572px" : "570px";
+    // style={{ minHeight: getMinHeight() }}
+  };
+
   return (
     <>
       <div
+        style={{ minHeight: getMinHeight() }}
         id="comic"
-        className="flex flex-col items-center justify-between gap-2 p-2 min-h-[656px]"
+        className="flex flex-col items-center justify-start gap-2 p-2"
       >
         {data.length > 0 && (
           <div className="flex items-center justify-start">
@@ -87,18 +84,6 @@ const Comics = (props: IPropsComics) => {
             </div>
           </div>
         )}
-        <div className="flex items-center justify-center p-2 mb-10">
-          <div className="bg-white p-1 rounded-md">
-            <Pagination
-              count={Math.floor(totalComics / 8)}
-              variant="outlined"
-              shape="rounded"
-              onChange={(event, pageNumber) =>
-                handlePagination(event, pageNumber)
-              }
-            />
-          </div>
-        </div>
       </div>
     </>
   );

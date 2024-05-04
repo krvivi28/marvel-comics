@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import Header from "../Header/Header";
 import LinearProgress from "@mui/material/LinearProgress";
 import Comics from "../Comics/Comics";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useSearch } from "../../context/SearchContext";
 import CharctersCarousel from "../Carousel/Carousel";
 import { useFilter } from "../../context/FilterContext";
@@ -13,19 +13,19 @@ import {
   fetchAllComics,
   fetchComicsByCharacterFilter,
   fetchComicsByTitle,
+  fetchToatlComics,
 } from "../../apiServices/apiServices";
-// import { Pagination } from "@mui/material";
+import Pagination from "../Pagination/Pagination";
 
 function Home() {
   const [page, setPage] = useState(1);
-  // const [pageCount, setPageCount] = useState(0);
   const { searchInput, isSearching } = useSearch();
   const { isFiltering, selectedCharcterIds } = useFilter();
 
   const { isLoading, data: comicsData } = useQuery({
     queryKey: ["comics", page],
     queryFn: () => fetchAllComics(page),
-    // staleTime: 10000,
+    staleTime: 10000,
   });
 
   const { isLoading: isSearchLoading, data: searchData } = useQuery({
@@ -43,28 +43,25 @@ function Home() {
     queryFn: () => fetchComicsByCharacterFilter(selectedCharcterIds, page),
   });
 
-  // const handlePagination = (event: any, page: any) => {
-  //   setPage(page);
-  //   console.log("Currently selected page:", page);
-  // };
+  const { data: totalComicsCount } = useQuery({
+    queryKey: ["totalComicsCount"],
+    queryFn: () => fetchToatlComics(),
+  });
 
-  // useEffect(() => {
-  //   if (isSearching) {
-  //     searchData ? setPageCount(searchData.total) : setPageCount(0);
-  //   }
-  //   if (isFiltering) {
-  //     charactersFilterData
-  //       ? setPageCount(charactersFilterData.total)
-  //       : setPageCount(0);
-  //   }
-  //   comicsData ? setPageCount(comicsData.total) : 0;
-  // }, [comicsData, searchData, charactersFilterData]);
+  const handlePagination = (event: any, page: any) => {
+    setPage(page);
+  };
 
-  // const getPageCount = useMemo(() => {
-  //   return pageCount;
-  // }, [pageCount]);
-
-  // console.log(isLoading, error, comicsData);
+  const getPageCount = useMemo(() => {
+    if (isSearching && searchData) {
+      return searchData.total;
+    }
+    if (isFiltering && charactersFilterData) {
+      return charactersFilterData.total;
+    }
+    if (comicsData) return comicsData.total;
+    else return totalComicsCount ? totalComicsCount.total : 0;
+  }, [isSearching, isFiltering, comicsData, charactersFilterData, searchData]);
 
   return (
     <div className="bg-[#000000ba] min-h-[100vh]">
@@ -124,18 +121,15 @@ function Home() {
             totalComics={comicsData ? comicsData.total : 0}
           />
         )}
-        {/* <div className="flex items-center justify-center p-2 mb-5">
+        <div className="flex items-center justify-center p-2 mb-5">
           <div className="bg-white p-1 rounded-md">
             <Pagination
-              count={Math.floor(getPageCount / 8)}
-              variant="outlined"
-              shape="rounded"
-              onChange={(event, pageNumber) =>
-                handlePagination(event, pageNumber)
-              }
+              totalItems={getPageCount}
+              perPageCount={8}
+              onChange={handlePagination}
             />
           </div>
-        </div> */}
+        </div>
       </div>
     </div>
   );
