@@ -13,7 +13,6 @@ import {
   fetchAllComics,
   fetchComicsByCharacterFilter,
   fetchComicsByTitle,
-  fetchToatlComics,
 } from "../../apiServices/apiServices";
 import Pagination from "../Pagination/Pagination";
 
@@ -45,7 +44,7 @@ function Home() {
 
   const { data: totalComicsCount } = useQuery({
     queryKey: ["totalComicsCount"],
-    queryFn: () => fetchToatlComics(),
+    queryFn: () => fetchAllComics(),
   });
 
   const handlePagination = (event: any, page: any) => {

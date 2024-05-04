@@ -6,11 +6,16 @@ const SeachInput = ({ setPage }: { setPage: any }) => {
   const { setIsFiltering, setSelectedCharcterIds } = useFilter();
 
   const handleOnChange = (e: any) => {
-    setSearchInput(e.target.value);
+    const searchInput = e.target.value;
+    setSearchInput(searchInput);
     setIsSearching(false);
     setPage(1);
     setIsFiltering(false);
     setSelectedCharcterIds([]);
+    if (searchInput.trim().length === 0 || searchInput.trim() === "") {
+      resetSearchState();
+      return;
+    }
     setTimeout(() => {
       setIsSearching(true);
     }, 1000);
